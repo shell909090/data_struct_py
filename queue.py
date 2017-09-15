@@ -18,19 +18,19 @@ class Queue(object):
         self.tail = None
 
     def push(self, o):
+        n = [o, None]
         if self.head is None:
-            self.tail = [None, o]
-            self.head = self.tail
+            self.head = n
         else:
-            self.tail[0] = [None, o]
-            self.tail = self.tail[0]
+            self.tail[1] = n
+        self.tail = n
 
     def pop(self):
         if self.head is None:
             raise Exception('empty queue')
         if self.tail is self.head:
             self.tail = None
-        self.head, o = self.head
+        o, self.head = self.head
         return o
 
     def empty(self):

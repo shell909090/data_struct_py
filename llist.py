@@ -17,48 +17,52 @@ class LinkedList(object):
         self.head = None
         self.tail = None
 
-    def lpush(self, o):
-        if self.tail is None:
-            self.tail = [None, o]
-            self.head = self.tail
-        else:
-            self.tail[0] = [None, o]
-            self.tail = self.tail[0]
+    def __iter__(self):
+        cur = self.head
+        while cur:
+            yield cur[0]
+            cur = cur[1]
 
-    def lpop(self):
+    def empty(self):
+        return self.head is None
+
+    def rpush(self, o):
+        n = [o, None]
+        if self.tail is None:
+            self.head = n
+        else:
+            self.tail[1] = n
+        self.tail = n
+
+    def rpop(self):
         if self.tail is None:
             raise Exception('empty list')
         if self.head is self.tail:
-            o = self.head[1]
+            o = self.head[0]
             self.head, self.tail = None, None
             return o
-        prev = self.head
-        while prev:
-            if self.tail is prev[0]:
+        o = self.tail[0]
+        cur = self.head
+        while cur:
+            if self.tail is cur[1]:
                 break
-            prev, _ = prev
-        if prev is None:
-            raise Exception('wtf')
-        o = self.tail[1]
-        prev[0] = None
-        self.tail = prev
+            cur = cur[1]
+        self.tail = cur
+        self.tail[1] = None
         return o
 
-    def rpush(self, o):
-        self.head = [self.head, o]
+    def lpush(self, o):
+        self.head = [o, self.head]
         if self.tail is None:
             self.tail = self.head
 
-    def rpop(self):
+    def lpop(self):
         if self.head is None:
             raise Exception('empty list')
         if self.head is self.tail:
             self.tail = None
-        self.head, o = self.head
+        o, self.head = self.head
         return o
-
-    def empty(self):
-        return self.head is None
 
 
 class LinkedListTest(unittest.TestCase):
@@ -73,6 +77,9 @@ class LinkedListTest(unittest.TestCase):
         self.assertEqual(l.rpop(), 3)
         l.lpush(4)
         l.rpush(5)
+        l.lpush(6)
+        self.assertEqual(list(l), [6, 4, 5])
+        self.assertEqual(l.lpop(), 6)
         self.assertEqual(l.lpop(), 4)
         self.assertEqual(l.lpop(), 5)
 

@@ -17,12 +17,12 @@ class Stack(object):
         self.head = None
 
     def push(self, o):
-        self.head = (self.head, o)
+        self.head = (o, self.head)
 
     def pop(self):
         if self.head is None:
             raise Exception('empty stack')
-        self.head, o = self.head
+        o, self.head = self.head
         return o
 
     def empty(self):
