@@ -17,14 +17,17 @@ class LinkedList(object):
         self.head = None
         self.tail = None
 
-    def __iter__(self):
-        cur = self.head
-        while cur:
-            yield cur[0]
-            cur = cur[1]
-
     def empty(self):
         return self.head is None
+
+    def __len__(self):
+        if self.head is None:
+            return 0
+        cur, count = self.head, 1
+        while cur != self.tail:
+            count += 1
+            cur = cur[1]
+        return count
 
     def rpush(self, o):
         n = [o, None]
@@ -64,6 +67,12 @@ class LinkedList(object):
         o, self.head = self.head
         return o
 
+    def __iter__(self):
+        cur = self.head
+        while cur:
+            yield cur[0]
+            cur = cur[1]
+
 
 class LinkedListTest(unittest.TestCase):
 
@@ -78,9 +87,11 @@ class LinkedListTest(unittest.TestCase):
         l.lpush(4)
         l.rpush(5)
         l.lpush(6)
+        self.assertEqual(len(l), 3)
         self.assertEqual(list(l), [6, 4, 5])
         self.assertEqual(l.lpop(), 6)
         self.assertEqual(l.lpop(), 4)
+        self.assertEqual(len(l), 1)
         self.assertEqual(l.lpop(), 5)
 
     def test_empty(self):

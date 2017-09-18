@@ -17,6 +17,18 @@ class Queue(object):
         self.head = None
         self.tail = None
 
+    def empty(self):
+        return self.head is None
+
+    def __len__(self):
+        if self.head is None:
+            return 0
+        cur, count = self.head, 1
+        while cur != self.tail:
+            count += 1
+            cur = cur[1]
+        return count
+
     def push(self, o):
         n = [o, None]
         if self.head is None:
@@ -33,9 +45,6 @@ class Queue(object):
         o, self.head = self.head
         return o
 
-    def empty(self):
-        return self.head is None
-
 
 class QueueTest(unittest.TestCase):
 
@@ -43,7 +52,9 @@ class QueueTest(unittest.TestCase):
         q = Queue()
         q.push(1)
         q.push(2)
+        self.assertEqual(len(q), 2)
         self.assertEqual(q.pop(), 1)
+        self.assertEqual(len(q), 1)
         q.push(3)
         self.assertEqual(q.pop(), 2)
         self.assertEqual(q.pop(), 3)

@@ -16,6 +16,16 @@ class Stack(object):
     def __init__(self):
         self.head = None
 
+    def empty(self):
+        return self.head is None
+
+    def __len__(self):
+        cur, count = self.head, 0
+        while cur:
+            count += 1
+            cur = cur[1]
+        return count
+
     def push(self, o):
         self.head = (o, self.head)
 
@@ -25,9 +35,6 @@ class Stack(object):
         o, self.head = self.head
         return o
 
-    def empty(self):
-        return self.head is None
-
 
 class StackTest(unittest.TestCase):
 
@@ -35,7 +42,9 @@ class StackTest(unittest.TestCase):
         s = Stack()
         s.push(1)
         s.push(2)
+        self.assertEqual(len(s), 2)
         self.assertEqual(s.pop(), 2)
+        self.assertEqual(len(s), 1)
         s.push(3)
         self.assertEqual(s.pop(), 3)
         self.assertEqual(s.pop(), 1)
