@@ -42,7 +42,10 @@ class VectorCircularQueue(object):
         return o
 
     def __iter__(self):
-        pass
+        i = self.head
+        while i != self.tail:
+            yield self.data[i]
+            i = (i+1) % self.size
 
 
 class VectorCircularQueueTest(unittest.TestCase):
@@ -56,6 +59,7 @@ class VectorCircularQueueTest(unittest.TestCase):
         self.assertEqual(len(q), 1)
         q.push(3)
         self.assertEqual(len(q), 2)
+        self.assertEqual(list(q), [2, 3])
         self.assertEqual(q.pop(), 2)
         self.assertEqual(q.pop(), 3)
 
