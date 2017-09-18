@@ -19,6 +19,12 @@ class VectorCircularQueue(object):
         self.head = n
         self.tail = 0
 
+    def empty(self):
+        return ((self.head+1) % self.size) == self.tail
+
+    def full(self):
+        return self.tail == self.head
+
     def push(self, o):
         if self.tail == self.head:
             raise Exception('queue full')
@@ -31,9 +37,6 @@ class VectorCircularQueue(object):
         self.head = (self.head+1) % self.size
         o = self.data[self.head]
         return o
-
-    def empty(self):
-        return ((self.head+1) % self.size) == self.tail
 
 
 class VectorCircularQueueTest(unittest.TestCase):
@@ -48,9 +51,12 @@ class VectorCircularQueueTest(unittest.TestCase):
         self.assertEqual(q.pop(), 3)
 
         self.assertEqual(q.empty(), True)
+        self.assertEqual(q.full(), False)
         with self.assertRaises(Exception):
             q.pop()
         q.push(4)
         q.push(5)
+        self.assertEqual(q.empty(), False)
+        self.assertEqual(q.full(), True)
         with self.assertRaises(Exception):
             q.push(6)
