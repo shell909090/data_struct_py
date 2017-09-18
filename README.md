@@ -6,8 +6,8 @@
 * doublelist: double linked list
 * vcqueue: vector circular queue
 * binheap: binary heap
-* hmapc: hashed map with chaining
-* hmapo: hashed map with open addressing
+* htabc: hash table with chaining
+* htabo: hash table with open addressing
 
 # TODO
 
