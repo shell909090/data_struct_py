@@ -2,10 +2,12 @@
 
 * stack: stack
 * queue: queue
-* llist: linked list
-* dlist: double linked list
+* linkedlist: linked list
+* doublelist: double linked list
 * vcqueue: vector circular queue
-* bheap: binary heap
+* binheap: binary heap
+* hmapc: hashed map with chaining
+* hmapo: hashed map with open addressing
 
 # TODO
 
