@@ -8,6 +8,7 @@
 '''
 from __future__ import absolute_import, division,\
     print_function, unicode_literals
+import unittest
 
 
 class HashTable(object):
@@ -48,25 +49,24 @@ class HashTable(object):
     def __getitem__(self, k):
         h = self.hashfunc(k) % self.bsize
         if self.buckets[h] is None:
-            raise Exception('key not exist')
+            raise KeyError()
         for pair in self.buckets[h]:
             if pair[0] == k:
                 return pair[1]
-        raise Exception('key not exist')
+        raise KeyError()
 
     def __delitem__(self, k):
         if (float(self.esize) / self.bsize) < 0.25:
             self.shrink()
         h = self.hashfunc(k) % self.bsize
         if self.buckets[h] is None:
-            print(k, h)
-            raise Exception('key not exist')
+            raise KeyError()
         for i, pair in enumerate(self.buckets[h]):
             if pair[0] == k:
                 del self.buckets[h][i]
                 self.esize -= 1
                 return
-        raise Exception('key not exist')
+        raise KeyError()
 
     def shrink(self):
         bsize = int(self.bsize/2)
@@ -102,17 +102,24 @@ class HashTable(object):
                 yield tuple(pair)
 
 
-def main():
-    h = HashTable()
-    for i in range(16):
-        h[i] = str(i)
-        # print(h.buckets)
-    print(h[1], h[2])
-    print(list(h.items()))
-    for i in range(15):
-        del h[i]
-    print(h.buckets)
+class HashTableTest(unittest.TestCase):
 
+    def test_htab(self):
+        h = HashTable()
+        self.assertEqual(h.empty(), True)
+        self.assertEqual(len(h), 0)
 
-if __name__ == '__main__':
-    main()
+        for i in range(24):
+            h[i] = str(i)
+        self.assertEqual(h.empty(), False)
+        self.assertEqual(len(h), 24)
+        self.assertEqual(h[0], '0')
+        self.assertEqual(h[23], '23')
+        with self.assertRaises(KeyError):
+            h[24]
+
+        for i in range(20):
+            del h[i]
+        self.assertEqual(len(h), 4)
+        with self.assertRaises(KeyError):
+            h[0]
