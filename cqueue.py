@@ -11,7 +11,7 @@ from __future__ import absolute_import, division,\
 import unittest
 
 
-class VectorCircularQueue(object):
+class CircularQueue(object):
 
     def __init__(self, n):
         self.size = n+1
@@ -48,10 +48,10 @@ class VectorCircularQueue(object):
             i = (i+1) % self.size
 
 
-class VectorCircularQueueTest(unittest.TestCase):
+class CircularQueueTest(unittest.TestCase):
 
     def test_vcqueue(self):
-        q = VectorCircularQueue(2)
+        q = CircularQueue(2)
         q.push(1)
         q.push(2)
         self.assertEqual(len(q), 2)
